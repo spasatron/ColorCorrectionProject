@@ -1,6 +1,4 @@
-function D = my_diff( image )
-    avgs = reshape( mean( image, [1, 2] ), [3, 1] );
-    
-    total_avg = mean( avgs );
-    D = max(abs( avgs - total_avg ));
+function D = my_diff( image, g )
+    S = reshape( image .^ cat( 3, g(1), g(2), g(3) ), [], 3);
+    D = max( (mean(S) - mean(S, 'all') ).^2 );
 end
