@@ -1,4 +1,4 @@
-%%Function takes in an image alread in the double format and computes the
+%%Function takes in an image already in the double format and computes the
 %%max of the mean differences vs the average.
 
 function D = colorDifferenceMean(image)
