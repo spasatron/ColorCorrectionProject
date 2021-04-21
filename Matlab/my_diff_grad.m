@@ -14,8 +14,8 @@ function grad = my_diff_grad( image, g )
     
     % Get denominator of smooth max
     grad = [sum( Rnz.^g(1) .* log( Rnz ) ) ; 
-            sum( Gnz.^g(1) .* log( Gnz ) ) ; 
-            sum( Bnz.^g(1) .* log( Bnz ) ) ]; 
+            sum( Gnz.^g(2) .* log( Gnz ) ) ; 
+            sum( Bnz.^g(3) .* log( Bnz ) ) ]; 
     
     % Compute gradient
     grad = 2 * grad / ( sum( exp( cv.^2 ) ) - 2) / 3 / N;
