@@ -12,10 +12,10 @@ function gamma = gamma_newton(image,g,tol,N)
 %           the order they are given in image
 
     image = reshape(image,[size(image,1).*size(image,2),3]); 
-    c = sum(image(:,3).^g); % weighted average of channel to normalize against
+    c = sum(image(:,2).^g); % weighted average of channel to normalize against
     C1 = image(:,1);
     C1 = C1(not(C1 == 0));
-    C2 = image(:,2);
+    C2 = image(:,3);
     C2 = C2(not(C2 == 0));
     
     f = @(x,C1,C2,c) [sum(C1.^x(1)),sum(C2.^x(2))] - c; % function
@@ -34,12 +34,12 @@ function gamma = gamma_newton(image,g,tol,N)
         feval = f(x1,C1,C2,c);
         k = k + 1;
     end
-    
-    gamma = [x1,g];
-    
+
+    gamma = [x1(1, 1);g;x1(1, 2)];
+
 %     Confirm results
-    v1 = sum(2.*image(:,1).^gamma(1) - image(:,2).^gamma(2) - image(:,3).^gamma(3));
-    v2 = sum(2.*image(:,2).^gamma(2) - image(:,1).^gamma(1) - image(:,3).^gamma(3));
-    v3 = sum(2.*image(:,3).^gamma(3) - image(:,2).^gamma(2) - image(:,1).^gamma(1));
-    max(abs([v1,v2,v3]))
+%     v1 = sum(2.*image(:,1).^gamma(1) - image(:,2).^gamma(2) - image(:,3).^gamma(3));
+%     v2 = sum(2.*image(:,2).^gamma(2) - image(:,1).^gamma(1) - image(:,3).^gamma(3));
+%     v3 = sum(2.*image(:,3).^gamma(3) - image(:,2).^gamma(2) - image(:,1).^gamma(1));
+%     max(abs([v1,v2,v3]))
 end
