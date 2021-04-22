@@ -1,38 +1,38 @@
 function hess = my_diff_hess( image, g )
     % Scale image, get averages
     S = reshape( image, [], 3) .^ (g');
-    cv = mean( S ) - mean( S, 'all' );
+    avgs = mean( S );
+    cv = avgs - mean( avgs );
     
     % Get nonzero pixel values for gradient
     pixels = reshape( image, [], 3 );
     N = size( pixels, 1 );
     
     % Get nonzero values for each channel
-    Rnz = nonzeros(pixels(:,1));
-    Gnz = nonzeros(pixels(:,2));
-    Bnz = nonzeros(pixels(:,3));
-    
-    % Get denominator of smooth max
-    hess1 = -4*ones(3, 3) / ( sum( exp( cv.^2 ) ) - 2 ).^2;
-    hess2 =  2*ones(3, 3) / ( sum( exp( cv.^2 ) ) - 2 );
-    
-  
+    Rnz = (S(:,1) ~= 0);
+    Gnz = (S(:,2) ~= 0);
+    Bnz = (S(:,3) ~= 0);
+   
     % Compute Jacobian of first derivatives
-    J = [sum( Rnz.^g(1) .* log( Rnz ) ) ; 
-         sum( Gnz.^g(2) .* log( Gnz ) ) ; 
-         sum( Bnz.^g(3) .* log( Bnz ) ) ] .* ...
+    J = [sum( S(Rnz,1) .* log( pixels(Rnz, 1) ) ) ; 
+         sum( S(Gnz,2) .* log( pixels(Gnz, 2) ) ) ; 
+         sum( S(Bnz,3) .* log( pixels(Bnz, 3) ) ) ] .* ...
         [ 2, -1, -1;
          -1,  2, -1;
          -1, -1,  2 ] / 3 / N; 
          
     % Compute matrix of unmixed second derivatives
-    J2 = [sum( Rnz.^g(1) .* log( Rnz ).^2 ) ; 
-          sum( Gnz.^g(1) .* log( Gnz ).^2 ) ; 
-          sum( Bnz.^g(1) .* log( Bnz ).^2 ) ] .* ...
-        [ 2, -1, -1;
-         -1,  2, -1;
-         -1, -1,  2 ] / 3 / N; 
-    
+    J2 = [sum( S(Rnz,1) .* log( pixels(Rnz, 1) ).^2 ) ; 
+          sum( S(Gnz,2) .* log( pixels(Gnz, 2) ).^2 ) ; 
+          sum( S(Bnz,3) .* log( pixels(Bnz, 3) ).^2 ) ] .* ...
+         [ 2, -1, -1;
+          -1,  2, -1;
+          -1, -1,  2 ] / 3 / N; 
+   
+    % Get denominator of smooth max
+    hess1 = -4*ones(3, 3) / ( sum( exp( cv.^2 ) ) - 2 ).^2;
+    hess2 =  2*ones(3, 3) / ( sum( exp( cv.^2 ) ) - 2 );
+
     hess1(1,1) = hess1(1,1)*sum( exp( cv.^2 ) .* cv .* J(1, :) ).^2;
     hess2(1,1) = hess2(1,1)*sum( exp( cv.^2 ) .* ( J(1,:).^2 + cv.*J2(1,:) + 2*cv.^2.*J(1,:).^2 ) );
 
