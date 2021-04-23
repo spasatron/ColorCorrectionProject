@@ -8,12 +8,14 @@ function xmin = test_fmincon(image,g)
 
 % Ouput:
 % xmin   the g that fmincon encounters
-%     lb = zeros(1,3); ub = [Inf,Inf,Inf]; % lower and upper bunds
-    xmin = fmincon(@(g) my_diff(image,g),g,[],[],[],[],,ub,@(g) intensity_constraint(image,g));
+    lb = zeros(1,3); ub = [Inf,Inf,Inf]; % lower and upper bunds
+    I = my_intensity(image,[1;1;1]);
+    options = optimoptions('fmincon','Display','iter','Algorithm','sqp');
+    xmin = fmincon(@(g) my_diff(image,g),g,[],[],[],[],lb,ub,@(g) intensity_constraint(image,g,I),options);
 end
 
 % Enforces intensity to remain constant
-function [c,ceq] = intensity_constraint(image,g)
+function [c,ceq] = intensity_constraint(image,g,I)
     c = [];
-    ceq = my_intensity(image,g) - my_intensity(image,[1;1;1]);
+    ceq = my_intensity(image,g) - I;
 end

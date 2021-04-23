@@ -10,7 +10,10 @@ function xmin = test_fmincon(image,g)
 % xmin   the g that fmincon encounters
     lb = zeros(1,3); ub = [Inf,Inf,Inf]; % lower and upper bunds
     I = my_intensity(image,[1;1;1]);
-    xmin = fmincon(@(g) my_diff(image,g),g,[],[],[],[],lb,ub,@(g) intensity_constraint(image,g,I));
+%     options = optimoptions('fmincon','Display','iter','Algorithm','sqp');
+    options = optimoptions('fmincon','Algorithm','sqp');
+    xmin = fmincon(@(g) my_diff_smooth(image,g),g,[],[],[],[],lb,ub,@(g) intensity_constraint(image,g,I),options);
+%     xmin = fmincon(@(g) my_diff_smooth(image,g),g,[],[],[],[],lb,ub,@(g) intensity_constraint(image,g,I));
 end
 
 % Enforces intensity to remain constant
