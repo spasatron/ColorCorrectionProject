@@ -4,12 +4,12 @@ function xmin = test_fmincon(image,g)
 
 % Input:  
 % image   an N by M by 3 tensor containing the RGB channel values
-% g       the gamma values for the RGB channels (must 
+% g       a colmn vector containing the gamma values for the RGB channels
 
 % Ouput:
 % xmin   the g that fmincon encounters
-    lb = zeros(1,3); ub = [Inf,Inf,Inf]; % lower and upper bunds
-    xmin = fmincon(@(g) my_diff(image,g),g,[],[],[],[],lb,ub,@(g) intensity_constraint(image,g));
+%     lb = zeros(1,3); ub = [Inf,Inf,Inf]; % lower and upper bunds
+    xmin = fmincon(@(g) my_diff(image,g),g,[],[],[],[],,ub,@(g) intensity_constraint(image,g));
 end
 
 % Enforces intensity to remain constant
