@@ -4,7 +4,7 @@ function xmin = test_fmincon(image,g)
 
 % Input:  
 % image   an N by M by 3 tensor containing the RGB channel values
-% g       the gamma values for the RGB channels
+% g       a colmn vector containing the gamma values for the RGB channels
 
 % Ouput:
 % xmin   the g that fmincon encounters
