@@ -9,9 +9,9 @@ function g = intensity_difference_solver( image, I, tol_n )
     Bnz = (pixels(:,3) ~= 0);
 
     % Set initial values
-    gr_old = 1;
-    gg_old = 1;
-    gb_old = 1;
+    gr_old = eps;
+    gg_old = eps;
+    gb_old = eps;
     
     % Select green channel based on intensity
     while true
