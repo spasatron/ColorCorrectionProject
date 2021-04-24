@@ -1,7 +1,7 @@
 function gamma = bisection_test(image)
 
-    startInterval = [.5; 1.5];
-    I = my_intensity(image, ones(1, 3));
+    startInterval = [.5; 10];
+    I = my_intensity(image, ones(3, 1));
     tol = 1e-8;
     maxIt = 100;
     LI = my_intensity(image, gamma_newton(image, startInterval(1, 1), 1e-8, 100)) - I;
