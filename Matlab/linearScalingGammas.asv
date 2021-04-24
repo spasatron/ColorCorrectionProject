@@ -1,0 +1,8 @@
+function gammas = linearScalingGammas()
+keyboard;
+    img = im2double(imread("test_images/lily.png"));
+    means = mean(img, [1,2]);
+    gammas = ones(3, 1);
+    gammas(1, 1) = 
+    
+end
